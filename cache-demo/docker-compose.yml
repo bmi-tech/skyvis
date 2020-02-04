@@ -10,6 +10,8 @@ services:
       - static
     volumes: 
       - ../conf/backend.conf:/etc/nginx/conf.d/default.conf
+      - ../nginx.conf:/etc/nginx/nginx.conf
+      - ../proxycache:/home/nginx/proxy_cache/cache
   static:
     image: nginx
     # ports: 
