@@ -2,15 +2,19 @@ version: "3"
 services:
   cache:
     image: nginx
-    build: .
     ports:
       - "8080:80"
     links:
       - static
     depends_on:
       - static
+    volumes: 
+      - ./cache_nginx.conf:/etc/nginx/nginx.conf
+      - ./cache:/home/nginx/proxy_cache/cache
   static:
     image: nginx
+    # ports: 
+    #   - "8081:80"
     volumes:
       - ~/Videos:/usr/share/nginx/html
   redis:
