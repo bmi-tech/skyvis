@@ -1,14 +1,15 @@
 version: "3"
 services:
   cache:
-    image: busybox
+    image: nginx
     ports:
       - "8080:80"
     links:
       - static
     depends_on:
       - static
-    command: "ping static"
+    volumes: 
+      - ../conf:/etc/nginx/conf.d/
   static:
     image: nginx
     # ports: 
