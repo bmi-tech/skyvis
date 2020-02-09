@@ -1,2 +1,4 @@
 proxycache/
 cache-demo/*.log
+
+dynamic-load/confd-0.16.0-linux-amd64
