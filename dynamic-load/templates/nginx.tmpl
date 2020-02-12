@@ -1,6 +1,6 @@
 upstream {{getv "/subdomain"}} {
 {{range getvs "/upstream/*"}}
-    server {{.}};
+    server {{$data := json .}} {{$data.IP}}:{{$data.Port}};
 {{end}}
 }
 
