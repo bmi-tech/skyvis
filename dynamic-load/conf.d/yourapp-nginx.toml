@@ -1,0 +1,10 @@
+[template]
+prefix = "/yourapp"
+src = "nginx.tmpl"
+dest = "yourapp.conf"
+owner = "nginx"
+mode = "0644"
+keys = [
+  "/subdomain",
+  "/upstream",
+]
