@@ -1,7 +1,7 @@
 [template]
 prefix = "/myapp"
 src = "nginx.tmpl"
-dest = "myapp.conf"
+dest = "tmp/myapp.conf"
 owner = "nginx"
 mode = "0644"
 keys = [

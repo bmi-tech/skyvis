@@ -1,0 +1,6 @@
+[template]
+src = "services.conf.tmpl"
+dest = "tmp/services.conf"
+keys = [
+  "/services/web"
+]
