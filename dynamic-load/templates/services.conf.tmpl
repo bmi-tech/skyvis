@@ -6,7 +6,7 @@ upstream {{base $dir}} {
 }
 
 server {
-    server_name {{base $dir}}.example.com;
+    server_name localhost;
     location / {
         proxy_pass http://{{base $dir}};
     }
