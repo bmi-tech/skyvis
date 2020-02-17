@@ -6,3 +6,13 @@
 
 - [使用 lua 扩展你的 nginx](https://blog.csdn.net/jiao_fuyou/article/details/36010691#)
 - [nginx的location配置详解](https://blog.csdn.net/tjcyjd/article/details/50897959)
+
+## 用到的
+
+- access_by_lua_block
+- echo_location
+- request_uri
+- uri
+- args
+- arg_`name` argument `name` in the request line
+- 字符串格式化:$a =1;  print("a = $a"); output: a = 1;

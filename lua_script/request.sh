@@ -1,0 +1,1 @@
+curl http://localhost:8087/play?path=s3
