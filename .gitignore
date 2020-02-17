@@ -5,3 +5,4 @@ dynamic-load/confd-0.16.0-linux-amd64
 tmp/
 proxy-cache/static_access.log
 proxy-cache/cache_access.log
+lua_script/error.log
