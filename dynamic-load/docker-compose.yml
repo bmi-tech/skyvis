@@ -1,0 +1,11 @@
+version: "3"
+services:
+  test_lua:
+    restart: always
+    image: dynamic_nginx
+    ports:
+      - "8090:80"
+    environment: 
+      HOST_IP: "192.168.0.106"
+volumes:
+  logvolume01: {}
