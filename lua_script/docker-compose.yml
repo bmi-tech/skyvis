@@ -5,7 +5,7 @@ services:
     image: openresty/openresty
     ports:
       - "8087:80"
-    volumes: 
+    volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
       - ./error.log:/var/log/error.log
 volumes:
