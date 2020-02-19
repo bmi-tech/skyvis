@@ -16,7 +16,8 @@ server {
     }
 
     location =/gateway {
-    return 200 "user=$arg_path's user&password=$arg_path's password";
+        proxy_pass http://gateway;
+        #return 200 "user=$arg_path's user&password=$arg_path's password";
     }
 
     location /play {
