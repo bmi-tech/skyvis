@@ -1,7 +1,7 @@
 proxycache/
 cache-demo/*.log
 
-dynamic-load/confd-0.16.0-linux-amd64
+dynamic-load/confd
 tmp/
 proxy-cache/static_access.log
 proxy-cache/cache_access.log
