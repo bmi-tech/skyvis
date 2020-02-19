@@ -7,5 +7,7 @@ services:
       - "8090:80"
     environment:
       HOST_IP: "192.168.1.42"
+    volumes:
+      - ./proxycache:/home/nginx/proxy_cache/cache
 volumes:
   logvolume01: {}
