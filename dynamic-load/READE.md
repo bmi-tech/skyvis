@@ -22,3 +22,13 @@ server 和 upstream 同属于 http 的下一级，其中 upstream 用于设置�
 [读取 json](https://github.com/kelseyhightower/confd/blob/master/docs/templates.md#complex-example)
 
 ### docker process manager
+
+## dokcer image
+
+### openresty
+
+- [Dockerfile](https://github.com/openresty/docker-openresty)
+
+### nginx
+
+- [Dockerfile](https://github.com/nginxinc/docker-nginx)
