@@ -9,6 +9,7 @@ upstream {{base $dir}} {
 server {
     server_name -;
     location /hls {
+        proxy_http_version 1.1;
         proxy_pass http://hls;
         proxy_cache proxycache;
         proxy_cache_valid  200 206 304 301 302 10d;
@@ -16,26 +17,28 @@ server {
     }
 
     location =/gateway {
+        proxy_http_version 1.1;
         proxy_pass http://gateway;
         #return 200 "user=$arg_path's user&password=$arg_path's password";
     }
 
     location /play {
-     set $diff ''; # we have to predefine the $diff variable here
-     set $body '';
-     set $sum '';
-     set $the_status '';
+        proxy_http_version 1.1;
+        set $diff ''; # we have to predefine the $diff variable here
+        set $body '';
+        set $sum '';
+        set $the_status '';
 
-     access_by_lua_block {
-         local a = 32
-         local b = 56
+        access_by_lua_block {
+            local a = 32
+            local b = 56
 
-         local res = ngx.location.capture('/gateway',
-         { args =  ngx.var.args });
-         ngx.var.diff = a - b;  -- write to $diff directly
-         ngx.var.sum = a + b;
-         ngx.var.body = res.body;
-     }
-        echo_location /hls '$args&$body';
-     }
+            local res = ngx.location.capture('/gateway',
+            { args =  ngx.var.args });
+            ngx.var.diff = a - b;  -- write to $diff directly
+            ngx.var.sum = a + b;
+            ngx.var.body = res.body;
+        }
+            echo_location /hls '$args&$body';
+        }
 }
