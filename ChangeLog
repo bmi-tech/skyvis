@@ -1,0 +1,6 @@
+# changelog
+
+- 由 nginx 改为 openresty 以后,服务的启动命令需要做相应的修改
+  - 因为 nginx 在 /etc/init.d 中添加了控制`service`的配置文件 nginx,所以可以使用`service nginx start`
+  - 其实底层也是调用了`nginx -g 'daemon off;'`相关命令
+  - openresty 没有配置`service`启动脚本所有直接使用`openresty -g 'daemon on;'`命令完全可以

@@ -2,6 +2,12 @@
 
 ## confd+nginx
 
+### nginx command
+
+- start: nginx -g 'daemon on;'
+  - `-g`全局
+  - 'daemon on/off;' 控制是否使用 daemon
+
 ### nginx configuration
 
 nginx 配置文件默认以 nginx.conf 为根文件，根文件中根配置项目根据网络层级、通讯协议和应用层协议不同因而字段名有所不同(可能为 tcp,udp,http,rtmp)等等。
