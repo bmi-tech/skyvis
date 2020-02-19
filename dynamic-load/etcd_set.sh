@@ -1,4 +1,4 @@
-etcdctl put /services/web/hls/2 '{"IP": "localhost","Port":8080}'
-# etcdctl put /services/web/cust2/2 '{"IP": "localhost","Port":8080}'
-# etcdctl put /services/web/cust2/1 '{"IP": "localhost","Port":8080}'
-etcdctl put /services/web/gateway/1 '{"IP": "localhost","Port":8080}'
+etcdctl put /services/web/hls/1 '{"IP": "192.168.1.42","Port":8081}'
+etcdctl put /services/web/hls/2 '{"IP": "192.168.1.42","Port":8082}'
+etcdctl put /services/web/gateway/1 '{"IP": "192.168.1.42","Port":8091}'
+etcdctl put /services/web/gateway/2 '{"IP": "192.168.1.42","Port":8092}'
