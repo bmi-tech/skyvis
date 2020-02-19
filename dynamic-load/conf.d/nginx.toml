@@ -5,4 +5,4 @@ keys = [
   "/services/web"
 ]
 check_cmd   = "/usr/bin/openresty -t -c /usr/local/openresty/nginx/conf/nginx.conf"
-reload_cmd  = "/usr/sbin/service nginx reload"
+reload_cmd  = "openresty -s reload"
