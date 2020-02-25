@@ -1,7 +1,7 @@
-{{range $dir := lsdir "/services/web"}}
+{{range $dir := lsdir "/bmi/skyvis/services/web"}}
 upstream {{base $dir}} {
-    {{$custdir := printf "/services/web/%s/*" $dir}}{{range gets $custdir}}
-    server {{$data := json .Value}}{{$data.IP}}:{{$data.Port}};
+    {{$custdir := printf "/bmi/skyvis/services/web/%s/*" $dir}}{{range gets $custdir}}
+    server {{$data := json .Value}}{{$data.ip}}:{{$data.port}};
     {{end}}
 }
 {{end}}

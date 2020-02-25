@@ -2,7 +2,7 @@
 src = "services.conf.tmpl"
 dest = "/etc/nginx/conf.d/default.conf"
 keys = [
-  "/services/web"
+  "/bmi/skyvis/services/web"
 ]
 check_cmd   = "/usr/bin/openresty -t -c /usr/local/openresty/nginx/conf/nginx.conf"
 reload_cmd  = "openresty -s reload"
