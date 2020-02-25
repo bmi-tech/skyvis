@@ -17,6 +17,10 @@ done
 # Put a continual polling `confd` process into the background to watch
 # for changes every 10 seconds
 confd --log-level debug  --backend etcdv3 --node http://$ETCD --watch  &
+
+echo "[nginx] debug default.conf"
+cat /etc/nginx/conf.d/default.conf
+
 echo "[nginx] confd is now monitoring etcd for changes..."
 
 # Start the Nginx service using the generated config
