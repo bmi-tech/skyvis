@@ -1,5 +1,12 @@
 # changelog
 
+- 修改模板文件
+  - 在 video location 中的 lua 脚本中,对获取鉴权请求的回复进行判断
+  - 修改 location 的匹配规则
+  - 修改 location 的路径匹配规则
+  - 使用 `rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/*$1 break;`语法重写 uri
+  - 在使用已经被重写的 uri 作为 echo_location location 进行跳转
+
 - 由 nginx 改为 openresty 以后,服务的启动命令需要做相应的修改
   - 因为 nginx 在 /etc/init.d 中添加了控制`service`的配置文件 nginx,所以可以使用`service nginx start`
   - 其实底层也是调用了`nginx -g 'daemon off;'`相关命令

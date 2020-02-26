@@ -8,7 +8,7 @@ upstream {{base $dir}} {
 
 server {
     server_name -; # 这里可以匹配任何 host
-    location /hls {
+    location ~ /vod/proxy/s3/\*.(ts|m3u8) {
         proxy_http_version 1.1;
         proxy_pass http://hls;
         proxy_cache proxycache;
@@ -16,49 +16,47 @@ server {
         proxy_cache_key $uri;
     }
 
-    location =/gateway {
+    location = /gateway_getsecret {
         proxy_http_version 1.1;
-        proxy_pass http://gateway/skyvis/gateway/;
+        proxy_pass http://gateway/skyvis/gateway/secret;
         #return 200 "user=$arg_path's user&password=$arg_path's password";
     }
 
-    location =/bmi/skyvis/video {
+    location /bmi/skyvis/video {
         proxy_http_version 1.1;
-        set $diff ''; # we have to predefine the $diff variable here
-        set $body '';
-        set $sum '';
-        set $the_status '';
+        set $body '';  # we have to predefine the $diff variable here
 
         access_by_lua_block {
-            local a = 32
-            local b = 56
-
-            local res = ngx.location.capture('/gateway',
+            local res = ngx.location.capture('/gateway_getsecret',
             { args =  ngx.var.args });
-            ngx.var.diff = a - b;  -- write to $diff directly
-            ngx.var.sum = a + b;
-            ngx.var.body = res.body;
+            if res.status ~= ngx.HTTP_OK then
+                ngx.say(res.body)
+                ngx.exit(res.status)
+            else
+                ngx.var.body = res.body;
+            end
         }
-            echo_location /hls '$args&$body';
+        rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/*$1 break;
+        echo_location $uri '$args&$body';
         }
 
-    location =/bmi/skyvis/task/transcode {
+    location = /bmi/skyvis/task/transcode {
         proxy_http_version 1.1;
         proxy_pass http://gateway/skyvis/gateway/transcode;
     }
 
-    location =/bmi/skyvis/task/preplay {
+    location = /bmi/skyvis/task/preplay {
         proxy_http_version 1.1;
         proxy_pass http://gateway/skyvis/gateway/preplay;
     }
 
-    location =/bmi/skyvis/task/download {
+    location = /bmi/skyvis/task/download {
         proxy_http_version 1.1;
         proxy_pass http://gateway/skyvis/gateway/download;
     }
 
-    location =/bmi/skyvis/task/test {
+    location = /bmi/skyvis/help {
         proxy_http_version 1.1;
-        proxy_pass http://gateway/test;
+        proxy_pass http://gateway/skyvis/gateway/help;
     }
 }

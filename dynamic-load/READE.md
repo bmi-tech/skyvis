@@ -46,6 +46,45 @@ server 和 upstream 同属于 http 的下一级，其中 upstream 用于设置�
 - arg_`name` argument `name` in the request line
 - 字符串格式化:$a =1;  print("a = $a"); output: a = 1;
 
+##### lua 导入模块
+
+例如解析 json
+
+```lua
+local cjson = require "cjson.safe"
+cjson.encode(body)
+```
+
+##### lua 条件语句
+
+```lua
+if true then
+    xxxxxx
+else
+    oooooo
+    end
+```
+
+##### echo_location
+
+syntax: `echo_location <location> [<url_args>]`
+
+location 参数 可以随便设置`location`,不一定与其他 location 字段完全相同
+
+##### rewrite
+
+synctax: rewrite regex replacement [flag];
+
+使用正则表达式重写 URI
+
+flag 可以是 last,break.redirect,permanent
+
+##### locatin
+
+synctax: location [ = | ~ | ~* | ^~ ] uri { ... }
+
+参考[nginx的location配置详解](https://blog.csdn.net/tjcyjd/article/details/50897959)
+
 ## docker
 
 Dockerfile:
