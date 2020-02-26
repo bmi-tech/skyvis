@@ -1,8 +1,10 @@
 # dynamic-load
 
-## confd+nginx
+## confd
 
-### nginx command
+[读取 json](https://github.com/kelseyhightower/confd/blob/master/docs/templates.md#complex-example)
+
+## nginx
 
 - start: nginx -g 'daemon on;'
   - `-g`全局
@@ -23,18 +25,30 @@ server 和 upstream 同属于 http 的下一级，其中 upstream 用于设置�
     }
 ```
 
-### confd
-
-[读取 json](https://github.com/kelseyhightower/confd/blob/master/docs/templates.md#complex-example)
-
-### docker process manager
-
-## dokcer image
-
 ### openresty
 
-- [Dockerfile](https://github.com/openresty/docker-openresty)
+#### lua
 
-### nginx
+收到对某个分片的请求之后，nginx 调用 lua 脚本先从网关服务中读取分片文件存储的 s3 的账号密码，然后将账号密码拼接到请求后面转发给 hls 后台服务。
 
-- [Dockerfile](https://github.com/nginxinc/docker-nginx)
+#### 参考
+
+- [使用 lua 扩展你的 nginx](https://blog.csdn.net/jiao_fuyou/article/details/36010691#)
+- [nginx的location配置详解](https://blog.csdn.net/tjcyjd/article/details/50897959)
+
+#### 用到的
+
+- access_by_lua_block
+- echo_location
+- request_uri
+- uri
+- args
+- arg_`name` argument `name` in the request line
+- 字符串格式化:$a =1;  print("a = $a"); output: a = 1;
+
+## docker
+
+Dockerfile:
+
+[docker-openresty](https://github.com/openresty/docker-openresty)
+[docker-nginx](https://github.com/nginxinc/docker-nginx)
