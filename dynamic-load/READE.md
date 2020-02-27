@@ -180,3 +180,8 @@ tail -f /var/log/nginx/*.log
     3. `check_cmd`因为`新非法default.conf`而失败，confd 退出码为非 0
     4. 因为`until`再次执行`confd`
     5. `confd`不断报错的**无限循环**
+
+#### 解决方法
+
+- 使用`check_cmd`检测**渲染后的模板**而不是目标文件
+- 将 openresty 配置文件合并成一个文件，并作为`template`文件进行渲染和读取
