@@ -157,7 +157,7 @@ tail -f /var/log/nginx/*.log
 2. 进入`until`循环
 3. confd读取`backend`中预制的keys所对应的值
 4. 对模板文件进行渲染
-5. 比较渲染后的模板文件和原始的文件中的内容是否相等相同则返回 0
+5. 比较渲染后的模板文件和原始的文件中的内容是否相等相同则返回 0，否则接着往下执行
 6. 运行`check_cmd`中的命令
    1. 此时该文件引用的`default.conf`文件是原始的`default.conf`文件(官方openresty 镜像中默认带的)，所以配置合法
 7. `check_cmd`合法之后会将`default.conf`文件覆盖掉,而`新非法default.conf`因为其中`gateway/svvod`的`upstream`中 server 个数为0，所以变为非法的配置.
@@ -168,7 +168,7 @@ tail -f /var/log/nginx/*.log
 12. 退出`until`循环，在后台执行`confd`
 13. 执行 `openresty -g 'daemon on;'`命令，因为`新非法default.conf`所以启动失败
 14. 容器进程退出
-15. 因为`restart always`所以容器`restart`，注意：此时`新非法default.conf`文件仍然存在
+15. 因为`restart always`所以容器`restart`，注意：这是同一个容器，所以`新非法default.conf`文件仍然存在
 16. 如果缺失的`gateway/svvod`服务仍然没有开启
     1. 进入`until`循环
     2. 文件内容一样，confd 退出码为0，并退出`until`
