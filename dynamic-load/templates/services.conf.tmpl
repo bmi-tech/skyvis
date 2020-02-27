@@ -44,7 +44,7 @@ http {
             proxy_pass http://svvod;
             proxy_cache proxycache;
             proxy_cache_valid  200 206 304 301 302 10d;
-            proxy_cache_key $uri;
+            proxy_cache_key $request_uri;
         }
 
         location = /gateway_getsecret {
