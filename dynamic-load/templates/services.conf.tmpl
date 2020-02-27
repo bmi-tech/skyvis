@@ -1,62 +1,85 @@
-{{range $dir := lsdir "/bmi/skyvis/services/web"}}
-upstream {{base $dir}} {
-    {{$custdir := printf "/bmi/skyvis/services/web/%s/*" $dir}}{{range gets $custdir}}
-    server {{$data := json .Value}}{{$data.ip}}:{{$data.port}};
-    {{end}}
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
 }
-{{end}}
 
-server {
-    server_name -; # 这里可以匹配任何 host
-    location ~ /vod/proxy/s3/\*.(ts|m3u8) {
-        proxy_http_version 1.1;
-        proxy_pass http://hls;
-        proxy_cache proxycache;
-        proxy_cache_valid  200 206 304 301 302 10d;
-        proxy_cache_key $uri;
+
+http {
+    proxy_cache_path  /home/nginx/proxy_cache/cache levels=1:2 keys_zone=proxycache:60m max_size=120m inactive=2h use_temp_path=on;
+    proxy_temp_path    /home/nginx/proxy_cache/temp;
+    proxy_cache_key    $host$request_uri;
+    include      mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    {{range $dir := lsdir "/bmi/skyvis/services/web"}}
+    upstream {{base $dir}} {
+        {{$custdir := printf "/bmi/skyvis/services/web/%s/*" $dir}}{{range gets $custdir}}
+        server {{$data := json .Value}}{{$data.ip}}:{{$data.port}};
+        {{end}}
     }
+    {{end}}
 
-    location = /gateway_getsecret {
-        proxy_http_version 1.1;
-        proxy_pass http://gateway/skyvis/gateway/secret;
-        #return 200 "user=$arg_path's user&password=$arg_path's password";
-    }
-
-    location /bmi/skyvis/video {
-        proxy_http_version 1.1;
-        set $body '';  # we have to predefine the $diff variable here
-
-        access_by_lua_block {
-            local res = ngx.location.capture('/gateway_getsecret',
-            { args =  ngx.var.args });
-            if res.status ~= ngx.HTTP_OK then
-                ngx.say(res.body)
-                ngx.exit(res.status)
-            else
-                ngx.var.body = res.body;
-            end
+    server {
+        server_name -; # 这里可以匹配任何 host
+        location ~ /vod/proxy/s3/\*.(ts|m3u8) {
+            proxy_http_version 1.1;
+            proxy_pass http://svvod;
+            proxy_cache proxycache;
+            proxy_cache_valid  200 206 304 301 302 10d;
+            proxy_cache_key $uri;
         }
-        rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/*$1 break;
-        echo_location $uri '$args&$body';
+
+        location = /gateway_getsecret {
+            proxy_http_version 1.1;
+            proxy_pass http://gateway/skyvis/gateway/secret;
         }
 
-    location = /bmi/skyvis/task/transcode {
-        proxy_http_version 1.1;
-        proxy_pass http://gateway/skyvis/gateway/transcode;
-    }
+        location /bmi/skyvis/video {
+            proxy_http_version 1.1;
+            set $body '';  # we have to predefine the $diff variable here
 
-    location = /bmi/skyvis/task/preplay {
-        proxy_http_version 1.1;
-        proxy_pass http://gateway/skyvis/gateway/preplay;
-    }
+            access_by_lua_block {
+                local res = ngx.location.capture('/gateway_getsecret',
+                { args =  ngx.var.args });
+                if res.status ~= ngx.HTTP_OK then
+                    ngx.status = res.status
+                    ngx.say(res.body)
+                    ngx.exit(ngx.HTTP_OK)
+                else
+                    ngx.var.body = res.body;
+                end
+            }
+            rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/*$1 break;
+            echo_location $uri '$args&$body';
+            }
 
-    location = /bmi/skyvis/task/download {
-        proxy_http_version 1.1;
-        proxy_pass http://gateway/skyvis/gateway/download;
-    }
+        location ~ /bmi/skyvis/task/(.*) {
+            rewrite /bmi/skyvis/task/(.*) /skyvis/gateway/$1 break;
+            proxy_http_version 1.1;
+            proxy_pass http://gateway;
+        }
 
-    location = /bmi/skyvis/help {
-        proxy_http_version 1.1;
-        proxy_pass http://gateway/skyvis/gateway/help;
+        location = /bmi/skyvis/help {
+            proxy_http_version 1.1;
+            proxy_pass http://gateway/skyvis/gateway/help;
+        }
     }
 }

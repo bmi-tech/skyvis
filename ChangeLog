@@ -1,5 +1,21 @@
 # changelog
 
+- 修复错误
+  - check_cmd 是用来检测渲染后的模板(`{{.src}}`)的,
+  - 将整个`nginx.conf`配置文件都用模板文件渲染，以防止`check_cmd`检测的根配置文件引用老的、错误的子配置文件从而导致一直检查不通过。
+  - 将`location = /bmi/skyvis/task/(transcode|perplay|watermark)`三个`location`优化成一个
+  - `ngx.say()`在发送`HTTP Body`之前就已经发送过`HTTP Code 200`了，所以之后再调用`ngx.exit(code)`设置`HTTP Code`
+  是不合法的。所以修正为：
+    ```lua
+        ngx.say(res.body)
+        ngx.exit(res.status)
+        # 改为
+        ngx.status = res.status
+        ngx.say(res.body)
+        ngx.exit(ngx.HTTP_OK)
+    ```
+  - 
+
 - 修改模板文件
   - 在 video location 中的 lua 脚本中,对获取鉴权请求的回复进行判断
   - 修改 location 的匹配规则
