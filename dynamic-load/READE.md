@@ -2,7 +2,37 @@
 
 ## confd
 
+启动默认读取`etc/confd/conf.d`中`TOML`格式的`template resource`配置文件，根据配置文件的中指定的`backend`中指定的`keys`的**值**去渲染`src`指定的templates文件。然后将渲染后的模板和`dest`文件进行`md5`摘要进行比较，如果摘要不一致说明`dest`文件需要更新。
+不过在更新之前需要调用`check_cmd`命令(如果配置了)对渲染后的模板进行合法性检测，检测合法之后才会覆盖掉`dest`文件。然后调用`reload_cmd`命令(如果配置了)使服务加载新的配置文件。
+这里有个特例，如果命令启动时使用了`--only-sync`则不会执行`check_cmd`和`reload_cmd`命令，只更新文件。
+
+### json
+
 [读取 json](https://github.com/kelseyhightower/confd/blob/master/docs/templates.md#complex-example)
+
+### Template Resources
+
+template resources 是 `TOML`格式的配置文件,一个文件定义了一个 template resource.这些文件默认存放在`etc/confd/conf.d`
+
+#### 必须参数
+
+- dest 目标文件
+- keys 键的列表
+- src  template 文件的相对路径(相对于`/etc/confd/conf.d`)
+
+### Templates
+
+templates 定义了一个应用配置文件的模板，默认在`/etc/confd/templates`路径，使用`GOlang`的`text/templates`语法。
+Template Resources 中的`src`项就是指定该文件的路径。
+
+#### 可选参数
+
+- check_cmd:该命令用于检测配置的合法性。该命令是在渲染模板之后、覆盖配置文件之前调用的。所以正常使用方式是用来检测渲染之后的模板是否合法的。使用`{{.src}}`来表示渲染后的模板。
+  - 注意事项：
+    - `dest`文件应该是根配置文件，不应该被父配置所引用
+    - 比如根配置文件 nginx.conf 包含`dest`指向的`default.conf`配置文件
+
+- reload_cmd:在更新完配置文件之后，重新加载配置
 
 ## nginx
 
@@ -77,7 +107,7 @@ synctax: rewrite regex replacement [flag];
 
 使用正则表达式重写 URI
 
-flag 可以是 last,break.redirect,permanent
+flag 可以是 last,break,redirect,permanent
 
 ##### locatin
 
