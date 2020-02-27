@@ -6,3 +6,5 @@ tmp/
 proxy-cache/static_access.log
 proxy-cache/cache_access.log
 lua_script/error.log
+dynamic-load/access.log
+dynamic-load/error.log
