@@ -121,3 +121,62 @@ Dockerfile:
 
 [docker-openresty](https://github.com/openresty/docker-openresty)
 [docker-nginx](https://github.com/nginxinc/docker-nginx)
+
+## 踩坑
+
+### 服务陷入死的循环
+
+#### 原因
+
+```bash
+# Try to make initial configuration every 5 seconds until successful
+# Try to make initial configuration every 5 seconds until successful
+until confd --onetime --log-level debug  --backend etcdv3 --node http://$ETCD ; do
+    echo "[nginx] waiting for confd to create initial nginx configuration."
+    sleep 5
+done
+
+# Put a continual polling `confd` process into the background to watch
+# for changes every 10 seconds
+confd --log-level debug  --backend etcdv3 --node http://$ETCD --watch  &
+
+echo "[nginx] confd is now monitoring etcd for changes..."
+
+# Start the Nginx service using the generated config
+echo "[nginx] starting nginx service..."
+openresty -g 'daemon on;'
+tail -f /var/log/nginx/*.log
+```
+
+| 命令       | 调用内容                                                   |
+| ---------- | ---------------------------------------------------------- |
+| check_cmd  | openresty -t -c /usr/local/openresty/nginx/conf/nginx.conf |
+| reload_cmd | openresty-s reload                                         |
+
+1. 容器启动
+2. 进入`until`循环
+3. confd读取`backend`中预制的keys所对应的值
+4. 对模板文件进行渲染
+5. 比较渲染后的模板文件和原始的文件中的内容是否相等相同则返回 0
+6. 运行`check_cmd`中的命令
+   1. 此时该文件引用的`default.conf`文件是原始的`default.conf`文件(官方openresty 镜像中默认带的)，所以配置合法
+7. `check_cmd`合法之后会将`default.conf`文件覆盖掉,而`新非法default.conf`因为其中`gateway/svvod`的`upstream`中 server 个数为0，所以变为非法的配置.
+8. 运行`reload_cmd`,这时候会报错`host not found in upstream \"gateway\" in /etc/nginx/conf.d/default.conf` 退出码为非零。
+9. 因为`until`中运行结果非零所以回到步骤 3
+10. 步骤 4
+11. 步骤 5 此时因为渲染后的文件跟`新非法default.conf`内容一样，所以执行完成 退出码为 0
+12. 退出`until`循环，在后台执行`confd`
+13. 执行 `openresty -g 'daemon on;'`命令，因为`新非法default.conf`所以启动失败
+14. 容器进程退出
+15. 因为`restart always`所以容器`restart`，注意：此时`新非法default.conf`文件仍然存在
+16. 如果缺失的`gateway/svvod`服务仍然没有开启
+    1. 进入`until`循环
+    2. 文件内容一样，confd 退出码为0，并退出`until`
+    3. 在`openresty -g 'daemon on;'`步骤执行失败，容器进程退出
+    4. 进入**容器退出-重启无限循环**
+17. 如果缺失的`gateway/svvod`服务开启了
+    1. 进入`until`循环,执行`confd`
+    2. 因为监听的`key-value`有变化，所以文件内容发生变化
+    3. `check_cmd`因为`新非法default.conf`而失败，confd 退出码为非 0
+    4. 因为`until`再次执行`confd`
+    5. `confd`不断报错的**无限循环**
