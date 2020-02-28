@@ -4,7 +4,7 @@ services:
     restart: always
     image: dynamic_nginx
     ports:
-      - "8090:80"
+      - "8080:80"
     environment:
       HOST_IP: "192.168.1.42"
     volumes:

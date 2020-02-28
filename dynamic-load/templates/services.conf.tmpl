@@ -67,7 +67,7 @@ http {
                     ngx.var.body = res.body;
                 end
             }
-            rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/*$1 break;
+            rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/video$1 break;
             echo_location $uri '$args&$body';
             }
 
