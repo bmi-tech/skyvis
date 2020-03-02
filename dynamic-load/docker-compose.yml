@@ -7,6 +7,7 @@ services:
       - "8080:80"
     environment:
       HOST_IP: "192.168.1.42"
+      TZ: "Asia/Shanghai"
     volumes:
       - ./proxycache:/home/nginx/proxy_cache/cache
 volumes:
