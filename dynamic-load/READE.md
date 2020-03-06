@@ -22,7 +22,7 @@ template resources 是 `TOML`格式的配置文件,一个文件定义了一个 t
 
 ### Templates
 
-templates 定义了一个应用配置文件的模板，默认在`/etc/confd/templates`路径，使用`GOlang`的`text/templates`语法。
+templates 定义了一个应用配置文件的模板，默认在`/etc/confd/templates`路径，使用`Golang`的`text/templates`语法。
 Template Resources 中的`src`项就是指定该文件的路径。
 
 #### 可选参数
@@ -55,9 +55,40 @@ server 和 upstream 同属于 http 的下一级，其中 upstream 用于设置�
     }
 ```
 
+#### echo_location
+
+syntax: `echo_location <location> [<url_args>]`
+
+location 参数 可以随便设置`location`,不一定与其他 location 字段完全相同
+
+#### rewrite
+
+synctax: rewrite regex replacement [flag];
+
+使用正则表达式重写 URI
+
+flag 可以是 last,break,redirect,permanent
+
+#### locatin
+
+synctax: location [ = | ~ | ~* | ^~ ] uri { ... }
+
+参考[nginx的location配置详解](https://blog.csdn.net/tjcyjd/article/details/50897959)
+
+#### upstream
+
+##### load balancing
+
+参考：
+
+- [load_balancing](http://nginx.org/en/docs/http/load_balancing.html)
+- [upstream.server](http://nginx.org/en/docs/http/ngx_http_upstream_module.html#server)
+
 ### openresty
 
-#### lua
+openresty 是基于 nginx 和 lua 的高性能 web 平台，它内部集成了大量的 lua 库，第三方模块和大多数依赖。用于方便地搭建能够处理超高并发、扩展性极高的动态 Web 应用、Web 服务和动态网关.
+
+#### lua 的作用
 
 收到对某个分片的请求之后，nginx 调用 lua 脚本先从网关服务中读取分片文件存储的 s3 的账号密码，然后将账号密码拼接到请求后面转发给 hls 后台服务。
 
@@ -94,26 +125,6 @@ else
     oooooo
     end
 ```
-
-##### echo_location
-
-syntax: `echo_location <location> [<url_args>]`
-
-location 参数 可以随便设置`location`,不一定与其他 location 字段完全相同
-
-##### rewrite
-
-synctax: rewrite regex replacement [flag];
-
-使用正则表达式重写 URI
-
-flag 可以是 last,break,redirect,permanent
-
-##### locatin
-
-synctax: location [ = | ~ | ~* | ^~ ] uri { ... }
-
-参考[nginx的location配置详解](https://blog.csdn.net/tjcyjd/article/details/50897959)
 
 ## docker
 
