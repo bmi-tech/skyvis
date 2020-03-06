@@ -32,7 +32,7 @@ http {
     {{range $dir := lsdir "/bmi/skyvis/services/web"}}
     upstream {{base $dir}} {
         {{$custdir := printf "/bmi/skyvis/services/web/%s/*" $dir}}{{range gets $custdir}}
-        server {{$data := json .Value}}{{$data.ip}}:{{$data.port}};
+        server {{$data := json .Value}}{{$data.ip}}:{{$data.port}} {{if $data.weight}} weight={{$data.weight}}{{end}}; 
         {{end}}
     }
     {{end}}
