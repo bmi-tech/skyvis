@@ -42,12 +42,12 @@ http {
 
         location = /crossdomain.xml {
             content_by_lua_block {
-            local resp = 
-            [[<?xml version="1.0" encoding="utf-8"?>
-<cross-domain-policy>
-    <allow-access-from domain="*"/>
-</cross-domain-policy>
-]];
+            local resp = [[
+                <?xml version="1.0" encoding="utf-8"?>
+                <cross-domain-policy>
+                    <allow-access-from domain="*"/>
+                </cross-domain-policy>
+            ]];
             local len = string.len(resp);
             ngx.header.content_type = 'text/xml';
             ngx.header.content_length = len;
