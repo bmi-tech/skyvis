@@ -1,0 +1,60 @@
+version: "3"
+services:
+  rabbit:
+    restart: always
+    image: dockerhub.bmi:5000/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "skyvis"
+      RABBITMQ_DEFAULT_PASS: "skyvis"
+  etcd:
+    restart: always
+    image: dockerhub.bmi:5000/etcd
+    ports:
+      - "${ETCD_PORT:-2379}:2379"
+    volumes:
+      - "./etcd-data:/etcd-data"
+    command:
+      - "/usr/local/bin/etcd"
+      - "--listen-client-urls"
+      - "http://0.0.0.0:2379"
+      - "--advertise-client-urls"
+      - "http://0.0.0.0:2379"
+      - "--data-dir"
+      - "/etcd-data"
+  nginx:
+    restart: always
+    image: dockerhub.bmi:5000/dynamic_nginx
+    ports:
+      - "${NGINX_PORT:-8080}:80"
+    environment:
+      TZ: "Asia/Shanghai"
+      "HOST_IP": "etcd"
+    volumes:
+      - ./proxycache:/home/nginx/proxy_cache/cache
+    depends_on:
+      - gateway
+      - etcd
+    links:
+      - gateway
+      - etcd
+  gateway:
+    restart: always
+    image: dockerhub.bmi:5000/gateway:master
+    environment:
+      SERVER_IP: "gateway"
+      SERVER_PORT: 3000
+      REGISTRY_ENDPOINTS: "etcd:2379"
+      STORAGE_ENDPOINTS: "etcd:2379"
+      SERVER_WAN_ENDPOINT: "http://1.119.145.114:10808"
+    links:
+      - rabbit
+      - etcd
+    depends_on:
+      - rabbit
+      - etcd
+
+volumes:
+  logvolume01: {}
