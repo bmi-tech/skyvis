@@ -47,11 +47,11 @@ http {
                 <cross-domain-policy>
                     <allow-access-from domain="*"/>
                 </cross-domain-policy>
-            ]];
-            local len = string.len(resp);
-            ngx.header.content_type = 'text/xml';
-            ngx.header.content_length = len;
-            ngx.say(resp);
+            ]]
+            local len = string.len(resp)
+            ngx.header.content_type = 'text/xml'
+            ngx.header.content_length = len
+            ngx.say(resp)
             }
         }
 
@@ -74,13 +74,13 @@ http {
 
             access_by_lua_block {
                 local res = ngx.location.capture('/gateway_getsecret',
-                { args =  ngx.var.args });
+                { args =  ngx.var.args })
                 if res.status ~= ngx.HTTP_OK then
                     ngx.status = res.status
                     ngx.say(res.body)
                     ngx.exit(ngx.HTTP_OK)
                 else
-                    ngx.var.body = res.body;
+                    ngx.var.body = res.body
                 end
             }
             rewrite /bmi/skyvis/video(.*) /vod/proxy/s3/video$1 break;
