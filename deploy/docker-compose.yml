@@ -48,7 +48,7 @@ services:
       SERVER_PORT: 3000
       REGISTRY_ENDPOINTS: "etcd:2379"
       STORAGE_ENDPOINTS: "etcd:2379"
-      SERVER_WAN_ENDPOINT: "http://1.119.145.114:10808"
+      SERVER_WAN_ENDPOINT: "${WAN_ENDPOINT:-http://1.119.145.114:10808}"
     links:
       - rabbit
       - etcd
