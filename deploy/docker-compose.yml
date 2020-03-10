@@ -2,7 +2,7 @@ version: "3"
 services:
   rabbit:
     restart: always
-    image: dockerhub.bmi:5000/rabbitmq
+    image: dockerhub.bmi:5000/rabbitmq:latest
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -11,7 +11,7 @@ services:
       RABBITMQ_DEFAULT_PASS: "skyvis"
   etcd:
     restart: always
-    image: dockerhub.bmi:5000/etcd
+    image: dockerhub.bmi:5000/etcd:latest
     ports:
       - "${ETCD_PORT:-2379}:2379"
     volumes:
@@ -26,9 +26,9 @@ services:
       - "/etcd-data"
   nginx:
     restart: always
-    image: dockerhub.bmi:5000/dynamic_nginx
+    image: dockerhub.bmi:5000/dynamic_nginx:latest
     ports:
-      - "${NGINX_PORT:-8080}:80"
+      - "${NGINX_PORT:-80}:80"
     environment:
       TZ: "Asia/Shanghai"
       "HOST_IP": "etcd"
@@ -48,7 +48,7 @@ services:
       SERVER_PORT: 3000
       REGISTRY_ENDPOINTS: "etcd:2379"
       STORAGE_ENDPOINTS: "etcd:2379"
-      SERVER_WAN_ENDPOINT: "${WAN_ENDPOINT:-http://1.119.145.114:10808}"
+      SERVER_WAN_ENDPOINT: "${WAN_ENDPOINT:-http://localhost:8080}"
     links:
       - rabbit
       - etcd
