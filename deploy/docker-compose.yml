@@ -26,7 +26,7 @@ services:
       - "/etcd-data"
   nginx:
     restart: always
-    image: dockerhub.bmi:5000/dynamic_nginx:latest
+    image: dockerhub.bmi:5000/dynamic_nginx:${NGINX_IMAGE_TAG}
     ports:
       - "${NGINX_PORT:-8080}:80"
     environment:
@@ -42,7 +42,7 @@ services:
       - etcd
   gateway:
     restart: always
-    image: dockerhub.bmi:5000/gateway:master
+    image: dockerhub.bmi:5000/gateway:${GATEWAY_IMAGE_TAG}
     environment:
       SERVER_IP: "gateway"
       SERVER_PORT: 3000
