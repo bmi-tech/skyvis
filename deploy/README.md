@@ -12,7 +12,9 @@
 | WAN_ENDPOINT      | 暴露在公网上的 endpoint，需要按照路由器端口映射 | http://localhost:8080 |
 | NOTIFY_PREFIX     | 天宇接受通知的接口                              | http://localhost:1008 |
 
-例如传入 nginx,gateway 镜像 tag:
+## 部署
+
+传入 nginx,gateway 镜像 tag:
 
 ```bash
 NGINX_IMAGE_TAG=v0.0.1 GATEWAY_IMAGE_TAG=v0.0.1 docker-compose up -d
