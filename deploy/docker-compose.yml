@@ -2,7 +2,7 @@ version: "3"
 services:
   rabbit:
     restart: always
-    image: dockerhub.bmi:5000/rabbitmq:latest
+    image: rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -50,6 +50,7 @@ services:
       STORAGE_ENDPOINTS: "etcd:2379"
       SERVER_WAN_ENDPOINT: "${WAN_ENDPOINT:-http://localhost:8080}"
       NOTIFY_PREFIX: "${NOTIFY_PREFIX:-http://localhost:1008}"
+      MESSAGE_URI: "amqp://skyvis:skyvis@rabbit:5672/"
     links:
       - rabbit
       - etcd
