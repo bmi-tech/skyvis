@@ -49,7 +49,7 @@ services:
       REGISTRY_ENDPOINTS: "etcd:2379"
       STORAGE_ENDPOINTS: "etcd:2379"
       SERVER_WAN_ENDPOINT: "${WAN_ENDPOINT:-http://localhost:8080}"
-      NOTIFY_PREFIX: "${NOTIFY_PREFIX:-http://localhost:1008}"
+      NOTIFY_PREFIX: "${NOTIFY_PREFIX:-http://localhost:1008/skyvis}"
       MESSAGE_URI: "amqp://skyvis:skyvis@rabbit:5672/"
     links:
       - rabbit
