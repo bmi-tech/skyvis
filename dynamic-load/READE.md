@@ -135,6 +135,21 @@ Dockerfile:
 
 ## 踩坑
 
+### proxy_pass
+
+### `echo_location`父子请求的状态码问题
+
+```conf
+    location = /request {
+        echo_location '/subrequest';
+    }
+    location = /subrequest {
+        return 500 "subrequest something wrong";
+    }
+```
+
+在这里`/subrequest`中`status code 500`不能影响父请求`/request`的状态码
+
 ### 服务陷入死的循环
 
 #### 原因
