@@ -8,3 +8,5 @@ proxy-cache/cache_access.log
 lua_script/error.log
 dynamic-load/access.log
 dynamic-load/error.log
+
+deploy/rabbitmq_db/

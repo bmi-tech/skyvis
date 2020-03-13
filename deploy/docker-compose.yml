@@ -9,6 +9,8 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "skyvis"
       RABBITMQ_DEFAULT_PASS: "skyvis"
+    volumes:
+      - "./rabbitmq_db:/var/lib/rabbitmq"
   etcd:
     restart: always
     image: dockerhub.bmi:5000/etcd:latest
