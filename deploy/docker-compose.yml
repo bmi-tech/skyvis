@@ -13,7 +13,7 @@ services:
       - "./rabbitmq_db:/var/lib/rabbitmq"
   etcd:
     restart: always
-    image: dockerhub.bmi:5000/etcd:latest
+    image: dockerhub.bmi:5000/etcd:v3.4.5
     ports:
       - "${ETCD_PORT:-2379}:2379"
     volumes:
@@ -24,6 +24,8 @@ services:
       - "http://0.0.0.0:2379"
       - "--advertise-client-urls"
       - "http://0.0.0.0:2379"
+      - "--log-level"
+      - "${ETCD-LOG:-info}"
       - "--data-dir"
       - "/etcd-data"
   nginx:
