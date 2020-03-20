@@ -25,7 +25,7 @@ services:
       - "--advertise-client-urls"
       - "http://0.0.0.0:2379"
       - "--log-level"
-      - "${ETCD-LOG:-info}"
+      - "${ETCD_LOG:-info}"
       - "--data-dir"
       - "/etcd-data"
   nginx:
