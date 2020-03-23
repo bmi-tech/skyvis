@@ -64,6 +64,23 @@ services:
     depends_on:
       - rabbit
       - etcd
+  telegraf:
+    # Full tag list: https://hub.docker.com/r/library/telegraf/tags/
+    image: "dockerhub.bmi:5000/telegraf"
+    build:
+      context: ../telegraf/
+      dockerfile: ./Dockerfile
+    environment:
+      HOSTNAME: "${HOSTNAME}"
+      INFLUXDB_HOST: "${INFLUXDB:-192.168.1.177}"
+    # Telegraf requires network access to InfluxDB
+    links:
+      - nginx
+    volumes:
+      # Mount for Docker API access
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - nginx
 
 volumes:
   logvolume01: {}
