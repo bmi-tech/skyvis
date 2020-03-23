@@ -105,5 +105,10 @@ http {
             proxy_http_version 1.1;
             proxy_pass http://gateway/skyvis/gateway/help;
         }
+
+        location = /bmi/skyvis/status {
+            stub_status on;
+            access_log off;
+        }
     }
 }
