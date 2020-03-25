@@ -1,5 +1,10 @@
 # changelog
 
+## 0.0.4
+
+- `~ /vod/proxy/s3/video.(ts|m3u8)`中`proxy_cache_valid`的`time`字段设置成可配置的，读取`/bmi/skyvis/config/nginx`值中的`cache.valid`字段
+  - 注意当往`template`文件中读取新的键值对的时候，还需要在`template resource`文件中的`keys`队列中添加该键
+
 - 修复错误
   - check_cmd 是用来检测渲染后的模板(`{{.src}}`)的,
   - 将整个`nginx.conf`配置文件都用模板文件渲染，以防止`check_cmd`检测的根配置文件引用老的、错误的子配置文件从而导致一直检查不通过。
@@ -7,6 +12,7 @@
   - 将`location = /bmi/skyvis/task/(transcode|perplay|watermark)`三个`location`优化成一个
   - `ngx.say()`在发送`HTTP Body`之前就已经发送过`HTTP Code 200`了，所以之后再调用`ngx.exit(code)`设置`HTTP Code`
   是不合法的。所以修正为：
+
     ```lua
         ngx.say(res.body)
         ngx.exit(res.status)
