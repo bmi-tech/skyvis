@@ -1,5 +1,15 @@
 # changelog
 
+## 0.0.5
+
+- 修改缓存相关配置
+  - 修改 proxy_cache_path 中的 path 参数
+  - 修改 proxy_cache_path 中 use_temp_path 为 off
+    - nginx 收到后台服务的 response 之后会将这个临时文件保存到 proxy_temp_path 所配置的 path,而 use_temp_path 用于控制这一功能是否启用
+  - 删除 proxy_temp_path 配置的路径
+  - 删除全局 proxy_cache_key
+- 调整 docker-compose 配置文件以适应 nginx 配置文件的修改
+
 ## 0.0.4
 
 - `~ /vod/proxy/s3/video.(ts|m3u8)`中`proxy_cache_valid`的`time`字段设置成可配置的，读取`/bmi/skyvis/config/nginx`值中的`cache.valid`字段

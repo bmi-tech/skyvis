@@ -40,7 +40,7 @@ services:
       TZ: "Asia/Shanghai"
       "HOST_IP": "etcd"
     volumes:
-      - ./proxycache:/home/nginx/proxy_cache/cache
+      - ./proxycache:/home/nginx/cache/one
     depends_on:
       - gateway
       - etcd
