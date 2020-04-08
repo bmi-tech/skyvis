@@ -10,3 +10,4 @@ dynamic-load/access.log
 dynamic-load/error.log
 
 deploy/rabbitmq_db/
+.idea/

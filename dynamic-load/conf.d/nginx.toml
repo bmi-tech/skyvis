@@ -3,7 +3,10 @@ src = "services.conf.tmpl"
 dest = "/usr/local/openresty/nginx/conf/nginx.conf"
 keys = [
   "/bmi/skyvis/services/web",
-  "/bmi/skyvis/config/nginx"
+  "/bmi/skyvis/config/nginx/cache/expire",
+  "/bmi/skyvis/config/nginx/cache/max_size",
+  "/bmi/skyvis/config/nginx/cache/zone_size",
+  "/bmi/skyvis/config/nginx/cache/inactive"
 ]
 check_cmd   = "/usr/bin/openresty -t -c {{.src}}"
 reload_cmd  = "openresty -s reload"

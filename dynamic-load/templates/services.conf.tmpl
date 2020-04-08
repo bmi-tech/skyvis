@@ -10,7 +10,7 @@ events {
 
 
 http {
-    proxy_cache_path  /home/nginx/cache/one levels=1:2 keys_zone=one:60m max_size=120m inactive=2h use_temp_path=off;
+    proxy_cache_path  /home/nginx/cache/one levels=1:2 keys_zone=one:{{getv "/bmi/skyvis/config/nginx/cache/zone_size" "50m"}} max_size={{getv "/bmi/skyvis/config/nginx/cache/max_size" "10g"}} inactive={{getv "/bmi/skyvis/config/nginx/cache/inactive" "24h"}} use_temp_path=off;
     include      mime.types;
     default_type  application/octet-stream;
 
@@ -57,7 +57,7 @@ http {
             proxy_http_version 1.1;
             proxy_pass http://svvod;
             proxy_cache one;
-            proxy_cache_valid  200 206 304 301 302 {{with getv "/bmi/skyvis/config/nginx" "{\"cache\":{\"expire\":\"1s\"}}"}} {{$data := json .}} {{$data.cache.expire}} {{end}};
+            proxy_cache_valid  200 206 304 301 302 {{getv "/bmi/skyvis/config/nginx/cache/expire" "24h"}};
             proxy_cache_key $request_uri;
         }
 
