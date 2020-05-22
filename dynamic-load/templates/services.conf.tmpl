@@ -37,6 +37,7 @@ http {
 
     server {
         server_name -; # 这里可以匹配任何 host
+        add_header Access-Control-Allow-Origin *;
 
         location = /crossdomain.xml {
             content_by_lua_block {
