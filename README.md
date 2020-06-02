@@ -10,12 +10,18 @@ cd 到`deploy`路径下,执行命令:
 NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=v0.0.3 HOSTNAME=192.168.1.42 docker-compose build
 ```
 
-## deploy
+## 部署
 
 ### 开启命令
 
-将`deploy/docker-compose.yml`文件拷贝到工作目录并运行下面命令:
+将[docker-compose.yml](deploy/docker-compose.yml)文件拷贝到工作目录并运行下面命令:
 
 ```bash
 WAN_ENDPOINT=http://1.119.145.114:10808 NOTIFY_PREFIX=http://119.4.227.238:18084/skyvis NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=dev HOSTNAME=192.168.1.12 docker-compose up -d
 ```
+
+其中参数的含义是:
+
+| WAN_ENDPOINT                 | NOTIFY_PREFIX      | NGINX_IMAGE_TAG          | GATEWAY_IMAGE_TAG      |
+| ---------------------------- | ------------------ | ------------------------ | ---------------------- |
+| 暴露到公网的`http://ip:port` | 天宇接受回调的地址 | dynamic_nginx 镜像的 tag | gateway 服务镜像的 tag |
