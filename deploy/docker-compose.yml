@@ -31,9 +31,9 @@ services:
   nginx:
     restart: always
     image: dockerhub.bmi:5000/dynamic_nginx:${NGINX_IMAGE_TAG}
-    build:
-      context: ../dynamic-load/
-      dockerfile: ./Dockerfile
+    # build:
+    #   context: ../dynamic-load/
+    #   dockerfile: ./Dockerfile
     ports:
       - "${NGINX_PORT:-8080}:80"
     environment:
