@@ -2,7 +2,7 @@ version: "3"
 services:
   rabbit:
     restart: always
-    image: rabbitmq:3-management
+    image: dockerhub.bmi:5000/rabbitmq:3-management
     ports:
       - "5672:5672"
       - "15672:15672"
