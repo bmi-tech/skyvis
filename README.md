@@ -29,7 +29,7 @@
 cd 到`deploy`路径下,执行命令:
 
 ```bash
-NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=v0.0.3 HOSTNAME=192.168.1.42 docker-compose build
+NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=v0.0.7 HOSTNAME=192.168.1.42 docker-compose build
 ```
 
 ## 部署
@@ -43,7 +43,7 @@ NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=v0.0.3 HOSTNAME=192.168.1.42 docker-com
 将[docker-compose.yml](deploy/docker-compose.yml)文件拷贝到要部署的工作目录，然后运行下面的命令:
 
 ```bash
-`WAN_ENDPOINT`=http://1.119.145.114:10808 `NOTIFY_PREFIX`=http://119.4.227.238:18084/skyvis `NGINX_IMAGE_TAG`=v0.0.6 `GATEWAY_IMAGE_TAG`=dev docker-compose up -d
+`WAN_ENDPOINT`=http://1.119.145.114:10808 `NOTIFY_PREFIX`=http://119.4.227.238:18084/skyvis `NGINX_IMAGE_TAG`=v0.0.6 `GATEWAY_IMAGE_TAG`=v0.0.7 docker-compose up -d
 ```
 
 上面的环境变量的作用如下:
