@@ -36,7 +36,7 @@ NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=v0.0.3 HOSTNAME=192.168.1.42 docker-com
 
 ### docker-compose 部署
 
-在单台机器上部署服务的时候，使用`docker-compose`可以提高部署的效率，减少部署过程中的错误。
+在单台机器上部署服务的时候，使用`docker-compose`可以提高部署的效率，减少错误。
 
 #### 部署命令
 
