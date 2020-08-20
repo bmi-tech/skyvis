@@ -80,7 +80,7 @@ NGINX_IMAGE_TAG=v0.0.6 GATEWAY_IMAGE_TAG=v0.0.7 HOSTNAME=192.168.1.42 docker-com
 
 1. 开启**至少一个**`svvod`服务示例，并正确地注册到`etcd`中去。
 2. 如果连一个`svvod`服务都没有条件部署的话，需要在`etcd`写入一个假的`svvod`服务注册信息，操作方式如下：
-   1. 下载对应系统和架构的`etcdctl`[解压后有etcd,和etcdctl](https://github.com/etcd-io/etcd/releases)
+   1. 下载对应系统和架构的`etcdctl`[官方包链接，下载对应压缩包，解压后有etcd,和etcdctl](https://github.com/etcd-io/etcd/releases)
    2. 运行`etcdctl put  /bmi/skyvis/services/web/svvod/fake_node '{"ip":"gateway","port":3000,"weight":1000}'  --endpoints <etcd 访问 ip>:2379`命令将伪造的信息写入`etcd`
 
 ### 没有部署`svvod`实例
